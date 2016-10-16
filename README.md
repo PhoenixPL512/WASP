@@ -1,14 +1,14 @@
 # WASP
 CanSat "WASP" sattelite project, based on Arduino
 
-## Sensors and modules list with *<interfaces>*:
-- **GLONASS NEO-7M-C** *<serial>* GPS Module 
-- **HC-12** *<serial>* communication module (RF) 
-- **IMU 9DOF** *<I2C>*, which contains
+## Sensors and modules list with *[interfaces]*:
+- **GLONASS NEO-7M-C** *[serial]* GPS Module 
+- **HC-12** *[serial]* communication module (RF) 
+- **IMU 9DOF** *[I2C]*, which contains
   * **LSM6DS33** 3-axis gyroscope/accelerometer
   * **LIS3MDL** 3-axis magnetometer
-- **DHT11** *<Serial Single-Bus>* temperature and humidrity sensor
-- Pololu *<analog>* gas sensors
+- **DHT11** *[Serial Single-Bus]* temperature and humidrity sensor
+- Pololu *[analog]* gas sensors
   * **MQ-4** methane sensor
   * **MQ-131** ozone sensor
   * **MQ-8** hydrogen sensor
