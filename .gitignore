@@ -27,3 +27,6 @@
 *.exe
 *.out
 *.app
+
+#DIA temporary files
+*.dia~
