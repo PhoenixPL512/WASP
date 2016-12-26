@@ -23,14 +23,14 @@ Most basic quest, which our WASP have to do is temperature and humidrity measure
 CanSat will send data to base, and write it to SD card (so it's not lost when we will loose contact with sattelite)
 Also, there will be provided interface to see the data when it's received in base.
 
-Second quest is tracking down WASP while it's falling down on parachute. We will try to create algorithm for landing in designated area, even autonomiccaly - just by sending coordinates of area. But that's so difficut, we don't know if it will work.
+Second quest is tracking down WASP while it's falling down on parachute. We will try to create algorithm for landing in designated area, even autonomiccaly - just by sending coordinates of area. But that's difficut, we don't know if it will work.
 
-Also, another features - sattelite control, by turning on/off sensors for example. Also, we will be able to make maneuvers, by controlling parachute (with 2 servomotors).
+Also, another features - sattelite control, ~~by turning on/off sensors for example~~ (cancelled feature, no relays in final project). Also, we will be able to make maneuvers by controlling parachute (with 2 servomotors).
 
 WASP Team:
 * Wojciech Olech (main programmer)
 * Tomasz Jakubowski (electronics)
-* Grzegorz Szczepański (sponsors and antenna)
-* Mikołaj Sawa (casing and misc stuff)
+* Grzegorz Szczepański (sponsors, casing, antenna)
+* Mikołaj Sawa (parachute and misc stuff)
 
 We are from Poland, we learn in Electronic School Group in Lublin. We are starting in 2017 edition of CanSat competition. Wish us luck.
