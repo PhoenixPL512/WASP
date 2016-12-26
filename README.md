@@ -25,7 +25,7 @@ Also, there will be provided interface to see the data when it's received in bas
 
 Second quest is tracking down WASP while it's falling down on parachute. We will try to create algorithm for landing in designated area, even autonomiccaly - just by sending coordinates of area. But that's difficut, we don't know if it will work.
 
-Also, another features - sattelite control, ~~by turning on/off sensors for example~~ (cancelled feature, no relays in final project). Also, we will be able to make maneuvers by controlling parachute (with 2 servomotors).
+~~Also, another features - sattelite control, by turning on/off sensors for example~~ (cancelled feature, no relays in final project). And last feature - we will be able to make maneuvers by controlling parachute (with 2 servomotors).
 
 WASP Team:
 * Wojciech Olech (main programmer)
