@@ -8,7 +8,7 @@ CanSat "WASP" sattelite project, based on Arduino
   * **LSM6DS33** 3-axis gyroscope/accelerometer
   * **LIS3MDL** 3-axis magnetometer
 - **Pololu LPS331AP** *[I2C]* pressure and attitude sensor
-- **DHT11** *[Serial Single-Bus]* temperature and humidrity sensor
+- **DHT11** *[Serial Single-Bus]* temperature and humidrity sensor, controlled by ATTiny24A *[I2C]*
 - Pololu *[analog]* gas sensors, controlled by ATTiny24A *[I2C]*
   * **MQ-4** methane sensor
   * **MQ-131** ozone sensor
