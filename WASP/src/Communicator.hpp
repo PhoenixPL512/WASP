@@ -1,9 +1,10 @@
 #ifndef __COMMUNICATOR_HPP__
 #define __COMMUNICATOR_HPP__
+#include "RF24.h"
+#include "SPI.h"
 #include "Sensor.hpp"
-#include "libs\RF24.h"
-#include "libs\nRF24L01.h"
-#include <SPI.h>
+#include <Arduino.h>
+#include <nRF24L01.h>
 
 class Communicator {
 private:

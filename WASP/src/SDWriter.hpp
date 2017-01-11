@@ -1,6 +1,7 @@
 #ifndef __SDWRITER_HPP__
 #define __SDWRITER_HPP__
 #include "Sensor.hpp"
+#include <Arduino.h>
 #include <SD.h>
 #include <SPI.h>
 

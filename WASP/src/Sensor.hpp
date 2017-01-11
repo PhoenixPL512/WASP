@@ -1,5 +1,6 @@
 #ifndef __SENSOR_HPP__
 #define __SENSOR_HPP__
+#include <Arduino.h>
 #include <Wire.h>
 #include <stdio.h>
 
