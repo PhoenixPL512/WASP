@@ -1,10 +1,7 @@
 #include "Sensor.hpp"
 
-SensorReader::SensorReader() {
-  
-}
+char *SensorsData::getRawData() {}
 
-SensorReader::~SensorReader() {
-  
-}
+SensorReader::SensorReader() {}
 
+SensorReader::~SensorReader() {}

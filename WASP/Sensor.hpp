@@ -15,6 +15,8 @@ struct SensorsData {
   int gyro[3];
   int magnet[3];
   char gps[1500];
+
+  char *getRawData();
 };
 
 class SensorReader {
@@ -22,6 +24,6 @@ public:
   SensorReader();
   ~SensorReader();
 
-  SensorsData* readData();
+  SensorsData *readData();
 };
 #endif
