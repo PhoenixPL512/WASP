@@ -7,6 +7,6 @@ void SensorsData::getRawData(char *buffer) {
           magnet[0], magnet[1], magnet[2], gps);
 }
 
-SensorReader::SensorReader() {}
+SensorReader::SensorReader() { Wire.begin(); }
 
 SensorReader::~SensorReader() {}
