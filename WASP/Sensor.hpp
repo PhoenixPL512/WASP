@@ -1,5 +1,6 @@
 #ifndef __SENSOR_HPP__
 #define __SENSOR_HPP__
+#include <stdio.h>
 
 struct SensorsData {
   unsigned long timestamp;
@@ -16,7 +17,7 @@ struct SensorsData {
   int magnet[3];
   char gps[1500];
 
-  char *getRawData();
+  void getRawData(char *buffer);
 };
 
 class SensorReader {
