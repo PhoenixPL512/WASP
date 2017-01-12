@@ -6,14 +6,14 @@
 
 struct SensorsData {
   unsigned long timestamp;
-  int CO;
-  int LPG;
-  int hydrogen;
-  int ozone;
-  int methane;
+  int CO;          // attiny
+  int LPG;         // attiny
+  int hydrogen;    // attiny
+  int ozone;       // attiny
+  int methane;     // attiny
+  int humidity;    // attiny
+  int temperature; // attiny
   int pressure;
-  int humidity;
-  int temperature;
   int accel[3];
   int gyro[3];
   int magnet[3];

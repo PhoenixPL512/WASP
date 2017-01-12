@@ -14,6 +14,7 @@ SensorReader::~SensorReader() {}
 SensorsData *SensorReader::readData() {
   SensorsData *data = new SensorsData;
   data->timestamp = millis();
+  // TODO: insert analog sensors reading here
 
   return data;
 }
