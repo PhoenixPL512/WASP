@@ -1,0 +1,7 @@
+#!/bin/bash
+#compile hex
+avr-gcc -g -Os -mmcu=attiny24a -DF_CPU=8000000UL -c main.c usiTwiSlave.c
+avr-gcc -g -mmcu=attiny24 -DF_CPU=8000000UL -o main.elf main.o usiTwiSlave.o
+avr-objcopy -j .text -j .data -O ihex main.elf main.hex
+rm main.o
+rm main.elf
