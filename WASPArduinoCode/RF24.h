@@ -15,14 +15,20 @@
 #ifndef __RF24_H__
 #define __RF24_H__
 
-#include <RF24_config.h>
+#include "RF24_config.h"
 
 /**
  * Power Amplifier level.
  *
  * For use with setPALevel()
  */
-typedef enum { RF24_PA_MIN = 0,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX, RF24_PA_ERROR } rf24_pa_dbm_e ;
+typedef enum {
+  RF24_PA_MIN = 0,
+  RF24_PA_LOW,
+  RF24_PA_HIGH,
+  RF24_PA_MAX,
+  RF24_PA_ERROR
+} rf24_pa_dbm_e;
 
 /**
  * Data rate.  How fast data moves through the air.
@@ -36,31 +42,36 @@ typedef enum { RF24_1MBPS = 0, RF24_2MBPS, RF24_250KBPS } rf24_datarate_e;
  *
  * For use with setCRCLength()
  */
-typedef enum { RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16 } rf24_crclength_e;
+typedef enum {
+  RF24_CRC_DISABLED = 0,
+  RF24_CRC_8,
+  RF24_CRC_16
+} rf24_crclength_e;
 
 /**
  * Driver for nRF24L01(+) 2.4GHz Wireless Transceiver
  */
 
-class RF24
-{
+class RF24 {
 private:
-  uint8_t ce_pin; /**< "Chip Enable" pin, activates the RX or TX role */
-  uint8_t csn_pin; /**< SPI Chip select */
-  bool wide_band; /* 2Mbs data rate in use? */
-  bool p_variant; /* False for RF24L01 and true for RF24L01P */
+  uint8_t ce_pin;       /**< "Chip Enable" pin, activates the RX or TX role */
+  uint8_t csn_pin;      /**< SPI Chip select */
+  bool wide_band;       /* 2Mbs data rate in use? */
+  bool p_variant;       /* False for RF24L01 and true for RF24L01P */
   uint8_t payload_size; /**< Fixed size of payloads */
-  bool ack_payload_available; /**< Whether there is an ack payload waiting */
-  bool dynamic_payloads_enabled; /**< Whether dynamic payloads are enabled. */ 
-  uint8_t ack_payload_length; /**< Dynamic size of pending ack payload. */
-  uint64_t pipe0_reading_address; /**< Last address set on pipe 0 for reading. */
+  bool ack_payload_available;    /**< Whether there is an ack payload waiting */
+  bool dynamic_payloads_enabled; /**< Whether dynamic payloads are enabled. */
+  uint8_t ack_payload_length;    /**< Dynamic size of pending ack payload. */
+  uint64_t
+      pipe0_reading_address; /**< Last address set on pipe 0 for reading. */
 
 protected:
   /**
    * @name Low-level internal interface.
    *
    *  Protected methods that address the chip directly.  Regular users cannot
-   *  ever call these.  They are documented for completeness and for developers who
+   *  ever call these.  They are documented for completeness and for developers
+   * who
    *  may want to extend this class.
    */
   /**@{*/
@@ -80,7 +91,8 @@ protected:
   /**
    * Set chip enable
    *
-   * @param level HIGH to actively begin transmission or LOW to put in standby.  Please see data sheet
+   * @param level HIGH to actively begin transmission or LOW to put in standby.
+   * Please see data sheet
    * for a much more detailed description of this pin.
    */
   void ce(int level);
@@ -93,7 +105,7 @@ protected:
    * @param len How many bytes of data to transfer
    * @return Current value of status register
    */
-  uint8_t read_register(uint8_t reg, uint8_t* buf, uint8_t len);
+  uint8_t read_register(uint8_t reg, uint8_t *buf, uint8_t len);
 
   /**
    * Read single byte from a register
@@ -111,7 +123,7 @@ protected:
    * @param len How many bytes of data to transfer
    * @return Current value of status register
    */
-  uint8_t write_register(uint8_t reg, const uint8_t* buf, uint8_t len);
+  uint8_t write_register(uint8_t reg, const uint8_t *buf, uint8_t len);
 
   /**
    * Write a single byte to a register
@@ -131,7 +143,7 @@ protected:
    * @param len Number of bytes to be sent
    * @return Current value of status register
    */
-  uint8_t write_payload(const void* buf, uint8_t len);
+  uint8_t write_payload(const void *buf, uint8_t len);
 
   /**
    * Read the receive payload
@@ -142,7 +154,7 @@ protected:
    * @param len Maximum number of bytes to read
    * @return Current value of status register
    */
-  uint8_t read_payload(void* buf, uint8_t len);
+  uint8_t read_payload(void *buf, uint8_t len);
 
   /**
    * Empty the receive buffer
@@ -194,7 +206,7 @@ protected:
    * @param reg Which register. Use constants from nRF24L01.h
    * @param qty How many successive registers to print
    */
-  void print_byte_register(const char* name, uint8_t reg, uint8_t qty = 1);
+  void print_byte_register(const char *name, uint8_t reg, uint8_t qty = 1);
 
   /**
    * Print the name and value of a 40-bit address register to stdout
@@ -207,12 +219,13 @@ protected:
    * @param reg Which register. Use constants from nRF24L01.h
    * @param qty How many successive registers to print
    */
-  void print_address_register(const char* name, uint8_t reg, uint8_t qty = 1);
+  void print_address_register(const char *name, uint8_t reg, uint8_t qty = 1);
 
   /**
    * Turn on or off the special features of the chip
    *
-   * The chip has certain 'features' which are only available when the 'features'
+   * The chip has certain 'features' which are only available when the
+   * 'features'
    * are enabled.  See the datasheet for details.
    */
   void toggle_features(void);
@@ -229,7 +242,8 @@ public:
   /**
    * Constructor
    *
-   * Creates a new instance of this driver.  Before using, you create an instance
+   * Creates a new instance of this driver.  Before using, you create an
+   * instance
    * and send in the unique pins that this chip is connected to.
    *
    * @param _cepin The pin attached to Chip Enable on the RF module
@@ -278,7 +292,7 @@ public:
    * @param len Number of bytes to be sent
    * @return True if the payload was delivered successfully false if not
    */
-  bool write( const void* buf, uint8_t len );
+  bool write(const void *buf, uint8_t len);
 
   /**
    * Test whether there are bytes available to be read
@@ -301,7 +315,7 @@ public:
    * @param len Maximum number of bytes to read into the buffer
    * @return True if the payload was delivered successfully false if not
    */
-  bool read( void* buf, uint8_t len );
+  bool read(void *buf, uint8_t len);
 
   /**
    * Open a pipe for writing
@@ -351,7 +365,7 @@ public:
 
   /**@}*/
   /**
-   * @name Optional Configurators 
+   * @name Optional Configurators
    *
    *  Methods you can use to get or set the configuration of the chip.
    *  None are required.  Calling begin() sets up a reasonable set of
@@ -406,7 +420,7 @@ public:
    * @return Payload length of last-received dynamic payload
    */
   uint8_t getDynamicPayloadSize(void);
-  
+
   /**
    * Enable custom payloads on the acknowledge packets
    *
@@ -433,7 +447,7 @@ public:
    * @return true if the hardware is nRF24L01+ (or compatible) and false
    * if its not.
    */
-  bool isPVariant(void) ;
+  bool isPVariant(void);
 
   /**
    * Enable or disable auto-acknowlede packets
@@ -454,7 +468,7 @@ public:
    * @param pipe Which pipeline to modify
    * @param enable Whether to enable (true) or disable (false) auto-acks
    */
-  void setAutoAck( uint8_t pipe, bool enable ) ;
+  void setAutoAck(uint8_t pipe, bool enable);
 
   /**
    * Set Power Amplifier (PA) level to one of four levels.
@@ -465,7 +479,7 @@ public:
    *
    * @param level Desired PA level.
    */
-  void setPALevel( rf24_pa_dbm_e level ) ;
+  void setPALevel(rf24_pa_dbm_e level);
 
   /**
    * Fetches the current PA level.
@@ -475,18 +489,19 @@ public:
    * by the enum mnemonics are negative dBm. See setPALevel for
    * return value descriptions.
    */
-  rf24_pa_dbm_e getPALevel( void ) ;
+  rf24_pa_dbm_e getPALevel(void);
 
   /**
    * Set the transmission data rate
    *
    * @warning setting RF24_250KBPS will fail for non-plus units
    *
-   * @param speed RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+   * @param speed RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS
+   * for 2Mbps
    * @return true if the change was successful
    */
   bool setDataRate(rf24_datarate_e speed);
-  
+
   /**
    * Fetches the transmission data rate
    *
@@ -494,7 +509,7 @@ public:
    * is one of 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS, as defined in the
    * rf24_datarate_e enum.
    */
-  rf24_datarate_e getDataRate( void ) ;
+  rf24_datarate_e getDataRate(void);
 
   /**
    * Set the CRC length
@@ -506,7 +521,8 @@ public:
   /**
    * Get the CRC length
    *
-   * @return RF24_DISABLED if disabled or RF24_CRC_8 for 8-bit or RF24_CRC_16 for 16-bit
+   * @return RF24_DISABLED if disabled or RF24_CRC_8 for 8-bit or RF24_CRC_16
+   * for 16-bit
    */
   rf24_crclength_e getCRCLength(void);
 
@@ -514,13 +530,13 @@ public:
    * Disable CRC validation
    *
    */
-  void disableCRC( void ) ;
+  void disableCRC(void);
 
   /**@}*/
   /**
-   * @name Advanced Operation 
+   * @name Advanced Operation
    *
-   *  Methods you can use to drive the chip in more advanced ways 
+   *  Methods you can use to drive the chip in more advanced ways
    */
   /**@{*/
 
@@ -544,7 +560,7 @@ public:
    *
    * To return to low power mode, call powerDown().
    */
-  void powerUp(void) ;
+  void powerUp(void);
 
   /**
    * Test whether there are bytes available to be read
@@ -555,7 +571,7 @@ public:
    * @param[out] pipe_num Which pipe has the payload available
    * @return True if there is a payload available, false if none is
    */
-  bool available(uint8_t* pipe_num);
+  bool available(uint8_t *pipe_num);
 
   /**
    * Non-blocking write to the open writing pipe
@@ -570,7 +586,7 @@ public:
    * @param len Number of bytes to be sent
    * @return True if the payload was delivered successfully false if not
    */
-  void startWrite( const void* buf, uint8_t len );
+  void startWrite(const void *buf, uint8_t len);
 
   /**
    * Write an ack payload for the specified pipe
@@ -586,7 +602,7 @@ public:
    * @param len Length of the data to send, up to 32 bytes max.  Not affected
    * by the static payload set by setPayloadSize().
    */
-  void writeAckPayload(uint8_t pipe, const void* buf, uint8_t len);
+  void writeAckPayload(uint8_t pipe, const void *buf, uint8_t len);
 
   /**
    * Determine if an ack payload was received in the most recent call to
@@ -613,7 +629,7 @@ public:
    * @param[out] tx_fail The send failed, too many retries (MAX_RT)
    * @param[out] rx_ready There is a message waiting to be read (RX_DS)
    */
-  void whatHappened(bool& tx_ok,bool& tx_fail,bool& rx_ready);
+  void whatHappened(bool &tx_ok, bool &tx_fail, bool &rx_ready);
 
   /**
    * Test whether there was a carrier on the line for the
@@ -635,16 +651,16 @@ public:
    *
    * @return true if signal => -64dBm, false if not
    */
-  bool testRPD(void) ;
+  bool testRPD(void);
 
   /**
    * Test whether this is a real radio, or a mock shim for
    * debugging.  Setting either pin to 0xff is the way to
    * indicate that this is not a real radio.
    *
-   * @return true if this is a legitimate radio 
+   * @return true if this is a legitimate radio
    */
-  bool isValid() { return ce_pin != 0xff && csn_pin != 0xff; } 
+  bool isValid() { return ce_pin != 0xff && csn_pin != 0xff; }
 
   /**@}*/
 };
@@ -653,12 +669,14 @@ public:
  * @example GettingStarted.pde
  *
  * This is an example which corresponds to my "Getting Started" blog post:
- * <a style="text-align:center" href="http://maniacbug.wordpress.com/2011/11/02/getting-started-rf24/">Getting Started with nRF24L01+ on Arduino</a>. 
+ * <a style="text-align:center"
+ * href="http://maniacbug.wordpress.com/2011/11/02/getting-started-rf24/">Getting
+ * Started with nRF24L01+ on Arduino</a>.
  *
- * It is an example of how to use the RF24 class.  Write this sketch to two 
- * different nodes.  Put one of the nodes into 'transmit' mode by connecting 
- * with the serial monitor and sending a 'T'.  The ping node sends the current 
- * time to the pong node, which responds by sending the value back.  The ping 
+ * It is an example of how to use the RF24 class.  Write this sketch to two
+ * different nodes.  Put one of the nodes into 'transmit' mode by connecting
+ * with the serial monitor and sending a 'T'.  The ping node sends the current
+ * time to the pong node, which responds by sending the value back.  The ping
  * node can then see how long the whole cycle took.
  */
 
@@ -690,17 +708,22 @@ public:
  */
 
 /**
- * @example pingpair_maple.pde 
+ * @example pingpair_maple.pde
  *
  * This is an example of how to use the RF24 class on the Maple.  For a more
  * detailed explanation, see my blog post:
- * <a href="http://maniacbug.wordpress.com/2011/12/14/nrf24l01-running-on-maple-3/">nRF24L01+ Running on Maple</a>
+ * <a
+ * href="http://maniacbug.wordpress.com/2011/12/14/nrf24l01-running-on-maple-3/">nRF24L01+
+ * Running on Maple</a>
  *
- * It will communicate well to an Arduino-based unit as well, so it's not for only Maple-to-Maple communication.
- * 
+ * It will communicate well to an Arduino-based unit as well, so it's not for
+ * only Maple-to-Maple communication.
+ *
  * Write this sketch to two different nodes,
- * connect the role_pin to ground on one.  The ping node sends the current time to the pong node,
- * which responds by sending the value back.  The ping node can then see how long the whole cycle
+ * connect the role_pin to ground on one.  The ping node sends the current time
+ * to the pong node,
+ * which responds by sending the value back.  The ping node can then see how
+ * long the whole cycle
  * took.
  */
 
@@ -759,34 +782,42 @@ public:
  * @mainpage Driver for nRF24L01(+) 2.4GHz Wireless Transceiver
  *
  * @section Goals Design Goals
- * 
+ *
  * This library is designed to be...
  * @li Maximally compliant with the intended operation of the chip
  * @li Easy for beginners to use
- * @li Consumed with a public interface that's similiar to other Arduino standard libraries
+ * @li Consumed with a public interface that's similiar to other Arduino
+ * standard libraries
  *
  * @section News News
- * 
- * NOW COMPATIBLE WITH ARDUINO 1.0 - The 'master' branch and all examples work with both Arduino 1.0 and earlier versions.  
- * Please <a href="https://github.com/maniacbug/RF24/issues/new">open an issue</a> if you find any problems using it with any version of Arduino.
  *
- * NOW COMPATIBLE WITH MAPLE - RF24 has been tested with the 
- * <a href="http://leaflabs.com/store/#Maple-Native">Maple Native</a>, 
+ * NOW COMPATIBLE WITH ARDUINO 1.0 - The 'master' branch and all examples work
+ * with both Arduino 1.0 and earlier versions.
+ * Please <a href="https://github.com/maniacbug/RF24/issues/new">open an
+ * issue</a> if you find any problems using it with any version of Arduino.
+ *
+ * NOW COMPATIBLE WITH MAPLE - RF24 has been tested with the
+ * <a href="http://leaflabs.com/store/#Maple-Native">Maple Native</a>,
  * and should work with any Maple board.  See the pingpair_maple example.
  * Note that only the pingpair_maple example has been tested on Maple, although
  * the others can certainly be adapted.
  *
  * @section Useful Useful References
- * 
+ *
  * Please refer to:
  *
  * @li <a href="http://maniacbug.github.com/RF24/">Documentation Main Page</a>
- * @li <a href="http://maniacbug.github.com/RF24/classRF24.html">RF24 Class Documentation</a>
+ * @li <a href="http://maniacbug.github.com/RF24/classRF24.html">RF24 Class
+ * Documentation</a>
  * @li <a href="https://github.com/maniacbug/RF24/">Source Code</a>
- * @li <a href="https://github.com/maniacbug/RF24/archives/master">Downloads Page</a>
- * @li <a href="http://www.nordicsemi.com/files/Product/data_sheet/nRF24L01_Product_Specification_v2_0.pdf">Chip Datasheet</a>
+ * @li <a href="https://github.com/maniacbug/RF24/archives/master">Downloads
+ * Page</a>
+ * @li <a
+ * href="http://www.nordicsemi.com/files/Product/data_sheet/nRF24L01_Product_Specification_v2_0.pdf">Chip
+ * Datasheet</a>
  *
- * This chip uses the SPI bus, plus two chip control pins.  Remember that pin 10 must still remain an output, or
+ * This chip uses the SPI bus, plus two chip control pins.  Remember that pin 10
+ * must still remain an output, or
  * the SPI hardware will go into 'slave' mode.
  *
  * @section More More Information
@@ -797,23 +828,33 @@ public:
  *
  * Stuff I have built with RF24
  *
- * <img src="http://farm7.staticflickr.com/6044/6307669179_a8d19298a6_m.jpg" width="240" height="160" alt="RF24 Getting Started - Finished Product">
+ * <img src="http://farm7.staticflickr.com/6044/6307669179_a8d19298a6_m.jpg"
+ * width="240" height="160" alt="RF24 Getting Started - Finished Product">
  *
- * <a style="text-align:center" href="http://maniacbug.wordpress.com/2011/11/02/getting-started-rf24/">Getting Started with nRF24L01+ on Arduino</a> 
+ * <a style="text-align:center"
+ * href="http://maniacbug.wordpress.com/2011/11/02/getting-started-rf24/">Getting
+ * Started with nRF24L01+ on Arduino</a>
  *
- * <img src="http://farm8.staticflickr.com/7159/6645514331_38eb2bdeaa_m.jpg" width="240" height="160" alt="Nordic FOB and nRF24L01+">
+ * <img src="http://farm8.staticflickr.com/7159/6645514331_38eb2bdeaa_m.jpg"
+ * width="240" height="160" alt="Nordic FOB and nRF24L01+">
  *
- * <a style="text-align:center" href="http://maniacbug.wordpress.com/2012/01/08/nordic-fob/">Using the Sparkfun Nordic FOB</a> 
+ * <a style="text-align:center"
+ * href="http://maniacbug.wordpress.com/2012/01/08/nordic-fob/">Using the
+ * Sparkfun Nordic FOB</a>
  *
- * <img src="http://farm7.staticflickr.com/6097/6224308836_b9b3b421a3_m.jpg" width="240" height="160" alt="RF Duinode V3 (2V4)">
+ * <img src="http://farm7.staticflickr.com/6097/6224308836_b9b3b421a3_m.jpg"
+ * width="240" height="160" alt="RF Duinode V3 (2V4)">
  *
- * <a href="http://maniacbug.wordpress.com/2011/10/19/sensor-node/">Low-Power Wireless Sensor Node</a>
+ * <a href="http://maniacbug.wordpress.com/2011/10/19/sensor-node/">Low-Power
+ * Wireless Sensor Node</a>
  *
- * <img src="http://farm8.staticflickr.com/7012/6489477865_b56edb629b_m.jpg" width="240" height="161" alt="nRF24L01+ connected to Leaf Labs Maple Native">
+ * <img src="http://farm8.staticflickr.com/7012/6489477865_b56edb629b_m.jpg"
+ * width="240" height="161" alt="nRF24L01+ connected to Leaf Labs Maple Native">
  *
- * <a href="http://maniacbug.wordpress.com/2011/12/14/nrf24l01-running-on-maple-3/">nRF24L01+ Running on Maple</a>
+ * <a
+ * href="http://maniacbug.wordpress.com/2011/12/14/nrf24l01-running-on-maple-3/">nRF24L01+
+ * Running on Maple</a>
  */
 
 #endif // __RF24_H__
 // vim:ai:cin:sts=2 sw=2 ft=cpp
-
