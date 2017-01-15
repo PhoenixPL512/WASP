@@ -8,12 +8,13 @@
 class SDWriter {
 private:
   int SPI_CS;
+  File logFile;
 
 public:
   SDWriter(int _SPI_CS);
   ~SDWriter();
 
-  void createNewFile();
   void writeData(SensorsData *data);
+  void writeData(const char *text);
 };
 #endif

@@ -5,7 +5,12 @@ Autonomy::Autonomy(int servoLeftPin, int servoRightPin) {
   servoRight.attach(servoRightPin);
 }
 
-Autonomy::~Autonomy() {
-  
-}
+Autonomy::~Autonomy() {}
 
+void Autonomy::checkServos() {
+  for (int i = 45; i <= 135; ++i) {
+    servoLeft.write(i);
+    servoRight.write(i);
+    delay(10);
+  }
+}

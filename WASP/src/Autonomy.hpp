@@ -15,5 +15,6 @@ public:
   bool doAutonomicStuff(SensorsData *data);
   bool checkIfLanded(SensorsData *data);
   bool correctVelocity(SensorsData *data);
+  void checkServos();
 };
 #endif
