@@ -13,4 +13,5 @@ all: $(OBJECTS)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-run:
+install:
+	sudo avrdude -p attiny24 -c usbasp -B20 -U flash:w:$(OUTPUT).hex -vv
