@@ -28,7 +28,12 @@ inline void writeSensorInfo() {
   file.println("Sensors info: ");
 
   file.print("temperatue: ");
-  file.println(lps.readTemperatureC());
+  file.close();
+  // HALT
+  char test[10];
+  sprintf(test, "%f", lps.readTemperatureC());
+  file = SD.open("log.txt", FILE_WRITE);
+  file.println(test);
 
   file.flush();
 }
