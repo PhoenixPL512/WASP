@@ -31,7 +31,7 @@ File logFile;
 inline void initLog() {
   SD.begin(SD_CS_PIN);
   logFile = SD.open("LOG.TXT", FILE_WRITE);
-  logFile.println("\n\n[LOGFILE OPENED]");
+  logFile.println("[LOGFILE OPENED]");
   logFile.flush();
 }
 
@@ -57,7 +57,7 @@ inline void writeReg(byte address, byte reg, byte value) {
   logFile.print(millis());
   logFile.print(" [DEBUG] Writing value ");
   logFile.print(value);
-  logFile.print("to reg ");
+  logFile.print(" to reg ");
   logFile.print(reg);
   logFile.print(" to device at ");
   logFile.println(address);
@@ -72,14 +72,26 @@ inline void writeReg(byte address, byte reg, byte value) {
 
 // # Sensors management #
 inline void initSensors() {
-// init LPS331 (temperature/pressure/attitude sensor)
 #ifdef __DEBUG__
   logFile.print(millis());
   logFile.println(" [DEBUG] initialising sensors");
   logFile.flush();
 #endif
-  Wire.begin(LPS331_I2C_ADDRESS);
+  Wire.begin();
+
+  // init LPS331 (temperature/pressure/attitude sensor)
   writeReg(LPS331_I2C_ADDRESS, 0x20, 0b11100000);
+
+  // init LIS3MDL (magnetometer)
+  writeReg(LIS3MDL_I2C_ADDRESS, 0x20, 0x70);
+  writeReg(LIS3MDL_I2C_ADDRESS, 0x21, 0x00);
+  writeReg(LIS3MDL_I2C_ADDRESS, 0x22, 0x00);
+  writeReg(LIS3MDL_I2C_ADDRESS, 0x23, 0x0C);
+
+  // init LSM6 (gyro/accelerometer)
+  writeReg(LSM6_I2C_ADDRESS, 0x10, 0x80);
+  writeReg(LSM6_I2C_ADDRESS, 0x11, 0x80);
+  writeReg(LSM6_I2C_ADDRESS, 0x12, 0x04);
 }
 
 // SETUP/LOOP
