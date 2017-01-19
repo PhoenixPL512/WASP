@@ -64,7 +64,7 @@ inline void logWriteSensorsData(SensorsData &data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
   logFile.print(data.timestamp);
-  logfile.flush();
+  logFile.flush();
 
   logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
