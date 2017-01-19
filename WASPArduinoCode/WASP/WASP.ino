@@ -198,7 +198,7 @@ String readGPS() {
     return "{NODATA}";
   } else if (!Serial.available()) {
     logFile.println(" [DEBUG] Nothing is available on serial port");
-    return "{NODATA}"
+    return "{NODATA}";
   } else {
     logFile.println(" [DEBUG] Reading string from serial...");
     return Serial.readString();
