@@ -184,7 +184,7 @@ float readPressure() {
 }
 
 float pressureToAttitude(float pressure) {
-  return (1 - powf(pressure, 0.190263)) * 44330.8;
+  return (1 - powf(pressure / 1013.25, 0.190263)) * 44330.8;
 }
 
 inline void readSensorsData(SensorsData &data) {
