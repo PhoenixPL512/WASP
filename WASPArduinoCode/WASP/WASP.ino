@@ -26,6 +26,15 @@
 // GLOBAL VARIABLES
 File logFile;
 
+// SENSORS STRUCTURE
+struct SensorsData {
+  long timestamp;
+  float temperature;
+  float pressure;
+  float attitude;
+};
+SensorsData sensorsData;
+
 // FUNCTIONS
 // # SD Card management #
 inline void initLog() {
@@ -44,11 +53,24 @@ inline void logWriteMessage(String message) {
 }
 
 template <typename T> inline void logWriteReading(String name, T value) {
-  logFile.print(millis());
-  logFile.print(" [R]");
+  logFile.print("[R]");
   logFile.print(name);
   logFile.print(':');
   logFile.println(value);
+  logFile.flush();
+}
+
+inline void logWriteSensorsData(SensorsData &data) {
+  logFile.println("[SENSORSDATA]");
+  logFile.print("[T]");
+  logFile.print(data.timestamp);
+  logfile.flush();
+
+  logWriteReading("Temperature", data.temperature);
+  logWriteReading("Pressure", data.pressure);
+  logWriteReading("Attitude", data.attitude);
+
+  logFile.println("[SENSORSDATA_END]");
   logFile.flush();
 }
 
@@ -131,6 +153,13 @@ float readTemperature() {
   return 42.5 + t / 480;
 }
 
+inline void readSensorsData(SensorsData &data) {
+  data.timestamp = millis();
+  data.temperature = readTemperature();
+  data.pressure = 2137;
+  data.attitude = 69;
+}
+
 // SETUP/LOOP
 void setup() {
   initLog();
@@ -138,7 +167,6 @@ void setup() {
 }
 
 void loop() {
-  float temperature = readTemperature();
-  logWriteReading("temperature", temperature);
-  delay(1000);
+  readSensorsData(sensorsData);
+  logWriteSensorsData(sensorsData);
 }
