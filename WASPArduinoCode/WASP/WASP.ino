@@ -69,7 +69,6 @@ inline void logWriteSensorsData(SensorsData &data) {
   logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
   logWriteReading("Attitude", data.attitude);
-  logWriteReading("GPS", data.GPS);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
