@@ -17,7 +17,7 @@
 
 // DEFINES
 /* I2C scanner found 3 devices: 0x1E, 0x5D and 0x6B */
-#define __DEBUG__ 1
+//#define __DEBUG__ 1
 #define SD_CS_PIN A1
 #define LPS331_I2C_ADDRESS 0x5D
 #define LIS3MDL_I2C_ADDRESS 0x1E
@@ -63,7 +63,7 @@ template <typename T> inline void logWriteReading(String name, T value) {
 inline void logWriteSensorsData(SensorsData &data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
-  logFile.print(data.timestamp);
+  logFile.println(data.timestamp);
   logFile.flush();
 
   logWriteReading("Temperature", data.temperature);
