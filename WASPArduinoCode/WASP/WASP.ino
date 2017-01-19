@@ -191,10 +191,10 @@ float pressureToAttitude(float pressure) {
 }
 
 String readGPS() {
-  if (Serial.available())
-    return Serial.readString();
-  else
+  if (!Serial || !Serial.available())
     return "[NODATA]";
+  else
+    return Serial.readString();
 }
 
 inline void readSensorsData(SensorsData &data) {
