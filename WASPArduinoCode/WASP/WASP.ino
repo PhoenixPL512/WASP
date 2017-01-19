@@ -136,12 +136,13 @@ float readTemperature() {
   Wire.beginTransmission(LPS331_I2C_ADDRESS);
   Wire.write(0xAB);
 #ifdef __DEBUG__
-  logFile.print("Wrote to LPS331, returned ");
+  logFile.print("Wrote at 0xAB to LPS331, returned ");
   int rc = Wire.endTransmission();
   logFile.println(rc);
 #else
   Wire.endTransmission();
 #endif
+
   Wire.requestFrom(LPS331_I2C_ADDRESS, 2);
 
   while (Wire.available() < 2)
@@ -153,11 +154,44 @@ float readTemperature() {
   return 42.5 + t / 480;
 }
 
+float readPressure() {
+#ifdef __DEBUG__
+  logFile.print(millis());
+  logFile.println(" [DEBUG] Reading pressure");
+  logFile.flush();
+#endif
+
+  Wire.beginTransmission(LPS331_I2C_ADDRESS);
+  Wire.write(0xA8);
+#ifdef __DEBUG__
+  logFile.print("Wrote at 0xA8 to LPS331, returned ");
+  int rc = Wire.endTransmission();
+  logFile.println(rc);
+#else
+  Wire.endTransmission();
+#endif
+
+  Wire.requestFrom(LPS331_I2C_ADDRESS, 3);
+  while (Wire.available() < 3)
+    ;
+
+  uint8_t pxl = Wire.read();
+  uint8_t pl = Wire.read();
+  uint8_t ph = Wire.read();
+  float p = (float)((int32_t)(int8_t)ph << 16 | (uint16_t)pl << 8 | pxl);
+
+  return p / 4096;
+}
+
+float pressureToAttitude(float pressure) {
+  return (1 - powf(pressure, 0.190263)) * 44330.8;
+}
+
 inline void readSensorsData(SensorsData &data) {
   data.timestamp = millis();
   data.temperature = readTemperature();
-  data.pressure = 2137;
-  data.attitude = 69;
+  data.pressure = readPressure();
+  data.attitude = pressureToAttitude(data.pressure);
 }
 
 // SETUP/LOOP
