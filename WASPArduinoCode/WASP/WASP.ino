@@ -112,9 +112,9 @@ int16_t readTemperature() {
 #endif
 
   Wire.beginTransmission(LPS331_I2C_ADDRESS);
-  Wire.write(0xAB);
+  Wire.write(0x2B | (1 << 7));
 #ifdef __DEBUG__
-  logFile.print("Wrote 0xAB to LPS331, returned ");
+  logFile.print("Wrote to LPS331, returned ");
   int rc = Wire.endTransmission();
   logFile.println(rc);
 #else
@@ -126,8 +126,9 @@ int16_t readTemperature() {
     ;
   uint8_t tl = Wire.read();
   uint8_t th = Wire.read();
+  int16_t t = (int16_t)(th << 8 | tl);
 
-  return (int16_t)(th << 8 | tl);
+  return 42.5 + (float)t / 480;
 }
 
 // SETUP/LOOP
