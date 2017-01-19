@@ -194,7 +194,7 @@ String readGPS() {
   if (Serial.available())
     return Serial.readString();
   else
-    return "";
+    return "[NODATA]";
 }
 
 inline void readSensorsData(SensorsData &data) {
