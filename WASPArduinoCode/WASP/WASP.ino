@@ -1,66 +1,51 @@
-#include "LPS331.h"
+/**
+* @Author: Wojciech Olech
+* @Date:   19-01-2017
+* @Email:  phoenixpl512@gmail.com
+* @Filename: WASP.ino
+* @Last modified by:   Wojciech Olech
+* @Last modified time: 19-01-2017
+* @License: GNU GPL
+* @Copyright: do whatever you want
+*/
+
+// INCLUDES
 #include <Arduino.h>
 #include <SD.h>
 #include <SPI.h>
-#include <stdio.h>
 
-// global vars
-File file;
-LPS331 lps;
+// DEFINES
+#define SD_CS_PIN A1
 
-// structures
-struct SensorData {
-  float pressure;
-  float temperature;
-  float attitude;
-};
+// GLOBAL VARIABLES
+File logFile;
 
-// SD functions
-inline void writeInfo(String text) {
-  file.print(millis());
-  file.print(" ");
-  file.println(text);
-  file.flush();
+// FUNCTIONS
+// # SD Card management #
+inline void logInit() {
+  SD.begin(SD_CS_PIN);
+  logFile = SD.open("LOG.TXT", FILE_WRITE);
+  logFile.println("\n\n[LOGFILE OPENED]");
+  logFile.flush();
 }
 
-inline void writeSensorInfo() {
-  file.print(millis());
-  file.println("Sensors info: ");
-
-  file.print("temperatue: ");
-  file.close();
-  // HALT
-  char test[10];
-  sprintf(test, "%f", lps.readTemperatureC());
-  file = SD.open("log.txt", FILE_WRITE);
-  file.println(test);
-
-  file.flush();
+inline void logWriteMessage(String message) {
+  logFile.print(millis());
+  logFile.print(' ');
+  logFile.println(message);
+  logFile.flush();
 }
 
-inline void openLog() {
-  SD.begin(A1);
-  file = SD.open("log.txt", FILE_WRITE);
-  file.println("BEGINNING OF NEW LOG!");
+template <typename T> inline void logWriteReading(String name, T value) {
+  logFile.print(millis());
+  logFile.print(" [R]");
+  logFile.print(name);
+  logFile.print(':');
+  logFile.println(value);
+  logFile.flush();
 }
 
-inline void initSensors() {
-  lps.init();
-  lps.enableDefault();
-}
+// SETUP/LOOP
+void setup() { logInit(); }
 
-void setup() {
-  openLog();
-  initSensors();
-  writeInfo("Sensors initialised!");
-  /*Serial.begin(9600);
-  if (!Serial) {
-    writeInfo("Failed initialising serial");
-  }*/
-}
-
-void loop() {
-  writeInfo("testing this");
-  writeSensorInfo();
-  delay(300);
-}
+void loop() {}
