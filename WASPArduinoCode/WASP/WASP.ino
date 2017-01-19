@@ -31,6 +31,7 @@ File logFile;
 inline void initLog() {
   SD.begin(SD_CS_PIN);
   logFile = SD.open("LOG.TXT", FILE_WRITE);
+  logFile.println();
   logFile.println("[LOGFILE OPENED]");
   logFile.flush();
 }
@@ -70,9 +71,9 @@ inline void writeReg(byte address, byte reg, byte value) {
 
 #ifdef __DEBUG__
   int rc = Wire.endTransmission();
-  logFile.print(" [returned ");
+  logFile.print(" (returned ");
   logFile.print(rc);
-  logFile.println(']');
+  logFile.println(')');
   logFile.flush();
 #else
   Wire.endTransmission();
@@ -103,6 +104,32 @@ inline void initSensors() {
   writeReg(LSM6_I2C_ADDRESS, 0x12, 0x04);
 }
 
+int16_t readTemperature() {
+#ifdef __DEBUG__
+  logFile.print(millis());
+  logFile.println(" [DEBUG] Reading temperature");
+  logFile.flush();
+#endif
+
+  Wire.beginTransmission(LPS331_I2C_ADDRESS);
+  Wire.write(0xAB);
+#ifdef __DEBUG__
+  logFile.print("Wrote 0xAB to LPS331, returned ");
+  int rc = Wire.endTransmission();
+  logFile.println(rc);
+#else
+  Wire.endTransmission();
+#endif
+  Wire.requestFrom(LPS331_I2C_ADDRESS, 2);
+
+  while (Wire.available() < 2)
+    ;
+  uint8_t tl = Wire.read();
+  uint8_t th = Wire.read();
+
+  return (int16_t)(th << 8 | tl);
+}
+
 // SETUP/LOOP
 void setup() {
   initLog();
@@ -110,6 +137,7 @@ void setup() {
 }
 
 void loop() {
-  logWriteMessage("test");
+  int16_t temperature = readTemperature();
+  logWriteReading("temperature", temperature);
   delay(1000);
 }
