@@ -77,6 +77,14 @@ inline void initSensors() {
 }
 
 // SETUP/LOOP
-void setup() { initLog(); }
+void setup() {
+  initLog();
+  pinMode(13, OUTPUT);
+}
 
-void loop() {}
+void loop() {
+  digitalWrite(13, 1);
+  delay(500);
+  digitalWrite(13, 0);
+  delay(500);
+}
