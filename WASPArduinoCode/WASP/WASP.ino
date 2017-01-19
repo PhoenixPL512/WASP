@@ -17,7 +17,7 @@
 
 // DEFINES
 /* I2C scanner found 3 devices: 0x1E, 0x5D and 0x6B */
-//#define __DEBUG__ 1
+#define __DEBUG__ 1
 #define SD_CS_PIN A1
 #define LPS331_I2C_ADDRESS 0x5D
 #define LIS3MDL_I2C_ADDRESS 0x1E
@@ -191,10 +191,24 @@ float pressureToAttitude(float pressure) {
 }
 
 String readGPS() {
+#ifdef __DEBUG__
+  logFile.print(millis());
+  if (!Serial) {
+    logFile.println(" [DEBUG] Serial not initialised");
+    return "{NODATA}";
+  } else if (!Serial.available()) {
+    logFile.println(" [DEBUG] Nothing is available on serial port");
+    return "{NODATA}"
+  } else {
+    logFile.println(" [DEBUG] Reading string from serial...");
+    return Serial.readString();
+  }
+#else
   if (!Serial || !Serial.available())
-    return "[NODATA]";
+    return "{NODATA}";
   else
     return Serial.readString();
+#endif
 }
 
 inline void readSensorsData(SensorsData &data) {
