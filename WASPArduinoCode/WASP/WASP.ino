@@ -60,14 +60,23 @@ inline void writeReg(byte address, byte reg, byte value) {
   logFile.print(" to reg ");
   logFile.print(reg);
   logFile.print(" to device at ");
-  logFile.println(address);
+  logFile.print(address);
   logFile.flush();
 #endif
 
   Wire.beginTransmission(address);
   Wire.write(reg);
   Wire.write(value);
+
+#ifdef __DEBUG__
+  int rc = Wire.endTransmission();
+  logFile.print(" [returned ");
+  logFile.print(rc);
+  logFile.println(']');
+  logFile.flush();
+#else
   Wire.endTransmission();
+#endif
 }
 
 // # Sensors management #
