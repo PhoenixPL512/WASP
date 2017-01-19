@@ -32,6 +32,7 @@ struct SensorsData {
   float temperature;
   float pressure;
   float attitude;
+  String GPS;
 };
 SensorsData sensorsData;
 
@@ -69,6 +70,7 @@ inline void logWriteSensorsData(SensorsData &data) {
   logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
   logWriteReading("Attitude", data.attitude);
+  logWriteReading("GPS", data.GPS);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -110,6 +112,7 @@ inline void initSensors() {
   logFile.flush();
 #endif
   Wire.begin();
+  Serial.begin(9600);
 
   // init LPS331 (temperature/pressure/attitude sensor)
   writeReg(LPS331_I2C_ADDRESS, 0x20, 0b11100000);
@@ -187,11 +190,14 @@ float pressureToAttitude(float pressure) {
   return (1 - powf(pressure / 1013.25, 0.190263)) * 44330.8;
 }
 
+String readGPS() { return Serial.readString(); }
+
 inline void readSensorsData(SensorsData &data) {
   data.timestamp = millis();
   data.temperature = readTemperature();
   data.pressure = readPressure();
   data.attitude = pressureToAttitude(data.pressure);
+  data.GPS = readGPS();
 }
 
 // SETUP/LOOP
