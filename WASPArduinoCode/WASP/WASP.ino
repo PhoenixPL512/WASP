@@ -112,7 +112,7 @@ float readTemperature() {
 #endif
 
   Wire.beginTransmission(LPS331_I2C_ADDRESS);
-  Wire.write(0x2B | (1 << 7));
+  Wire.write(0xAB);
 #ifdef __DEBUG__
   logFile.print("Wrote to LPS331, returned ");
   int rc = Wire.endTransmission();
@@ -138,7 +138,7 @@ void setup() {
 }
 
 void loop() {
-  int16_t temperature = readTemperature();
+  float temperature = readTemperature();
   logWriteReading("temperature", temperature);
   delay(1000);
 }
