@@ -198,9 +198,6 @@ inline void readSensorsData(SensorsData &data) {
 void setup() {
   initLog();
   initSensors();
-  byte settingsArray[] = {0x03, 0xFA, 0x00, 0x00, 0xE1, 0x00,
-                          0x00, 0x00, 0x00, 0x00, 0x00};
-  configureUblox(settingsArray);
 }
 
 void loop() {
