@@ -190,7 +190,12 @@ float pressureToAttitude(float pressure) {
   return (1 - powf(pressure / 1013.25, 0.190263)) * 44330.8;
 }
 
-String readGPS() { return Serial.readString(); }
+String readGPS() {
+  if (Serial.available())
+    return Serial.readString();
+  else
+    return "";
+}
 
 inline void readSensorsData(SensorsData &data) {
   data.timestamp = millis();
