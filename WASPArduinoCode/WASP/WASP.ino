@@ -53,14 +53,15 @@ template <typename T> inline void logWriteReading(String name, T value) {
 
 // # Misc I2C functions used by sensors #
 inline void writeReg(byte address, byte reg, byte value) {
-#if __DEBUG__
+#ifdef __DEBUG__
   logFile.print(millis());
-  logFile.print("[DEBUG] Writing value ");
+  logFile.print(" [DEBUG] Writing value ");
   logFile.print(value);
   logFile.print("to reg ");
   logFile.print(reg);
   logFile.print(" to device at ");
   logFile.println(address);
+  logFile.flush();
 #endif
 
   Wire.beginTransmission(address);
@@ -71,7 +72,12 @@ inline void writeReg(byte address, byte reg, byte value) {
 
 // # Sensors management #
 inline void initSensors() {
-  // init LPS331 (temperature/pressure/attitude sensor)
+// init LPS331 (temperature/pressure/attitude sensor)
+#ifdef __DEBUG__
+  logFile.print(millis());
+  logFile.println(" [DEBUG] initialising sensors");
+  logFile.flush();
+#endif
   Wire.begin(LPS331_I2C_ADDRESS);
   writeReg(LPS331_I2C_ADDRESS, 0x20, 0b11100000);
 }
@@ -79,12 +85,10 @@ inline void initSensors() {
 // SETUP/LOOP
 void setup() {
   initLog();
-  pinMode(13, OUTPUT);
+  initSensors();
 }
 
 void loop() {
-  digitalWrite(13, 1);
-  delay(500);
-  digitalWrite(13, 0);
-  delay(500);
+  logWriteMessage("test");
+  delay(1000);
 }
