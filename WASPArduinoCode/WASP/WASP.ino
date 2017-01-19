@@ -25,6 +25,7 @@
 
 // GLOBAL VARIABLES
 File logFile;
+HardwareSerial gpsSerial(Serial);
 
 // SENSORS STRUCTURE
 struct SensorsData {
@@ -112,7 +113,7 @@ inline void initSensors() {
   logFile.flush();
 #endif
   Wire.begin();
-  Serial.begin(9600);
+  gpsSerial.begin(9600);
 
   // init LPS331 (temperature/pressure/attitude sensor)
   writeReg(LPS331_I2C_ADDRESS, 0x20, 0b11100000);
@@ -204,10 +205,10 @@ String readGPS() {
     return Serial.readString();
   }
 #else
-  if (!Serial || !Serial.available())
+  if (!gpsSerial || !gpsSerial.available())
     return "{NODATA}";
   else
-    return Serial.readString();
+    return gpsSerial.readString();
 #endif
 }
 
