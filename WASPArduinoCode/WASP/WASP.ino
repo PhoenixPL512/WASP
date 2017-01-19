@@ -104,7 +104,7 @@ inline void initSensors() {
   writeReg(LSM6_I2C_ADDRESS, 0x12, 0x04);
 }
 
-int16_t readTemperature() {
+float readTemperature() {
 #ifdef __DEBUG__
   logFile.print(millis());
   logFile.println(" [DEBUG] Reading temperature");
@@ -126,9 +126,9 @@ int16_t readTemperature() {
     ;
   uint8_t tl = Wire.read();
   uint8_t th = Wire.read();
-  int16_t t = (int16_t)(th << 8 | tl);
+  float t = (float)((int16_t)(th << 8 | tl));
 
-  return 42.5 + (float)t / 480;
+  return 42.5 + t / 480;
 }
 
 // SETUP/LOOP
