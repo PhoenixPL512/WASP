@@ -28,16 +28,15 @@ File logFile;
 
 // SENSORS STRUCTURE
 struct SensorsData {
-  // long timestamp;
-  // float temperature;
-  // float pressure;
-  // float attitude;
-  // int16_t magnet[3];
-  // int16_t accel[3];
-  // int16_t gyro[3];
-  char gps[1500];
+  long timestamp;
+  float temperature;
+  float pressure;
+  float attitude;
+  int16_t magnet[3];
+  int16_t accel[3];
+  int16_t gyro[3];
 };
-SensorsData sensorsData;
+SensorsData *sensorsData;
 
 // FUNCTIONS
 // # SD Card management #
@@ -67,15 +66,15 @@ template <typename T> inline void logWriteReading(String name, T value) {
 inline void logWriteSensorsData(SensorsData &data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
-  // logFile.println(data.timestamp);
+  logFile.println(data.timestamp);
   logFile.flush();
 
-  /*logWriteReading("Temperature", data.temperature);
+  logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
   logWriteReading("Attitude", data.attitude);
   logWriteReading("MagnetX", data.magnet[0]);
   logWriteReading("MagnetY", data.magnet[1]);
-  logWriteReading("MagnetZ", data.magnet[2]);*/
+  logWriteReading("MagnetZ", data.magnet[2]);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -221,11 +220,11 @@ void readMagnet(int16_t *m) {
 }
 
 inline void readSensorsData(SensorsData &data) {
-  /*data.timestamp = millis();
+  data.timestamp = millis();
   data.temperature = readTemperature();
   data.pressure = readPressure();
   data.attitude = pressureToAttitude(data.pressure);
-  readMagnet(data.magnet);*/
+  readMagnet(data.magnet);
 }
 
 // SETUP/LOOP
@@ -234,7 +233,14 @@ void setup() {
   initSensors();
 }
 
+char gps[1500];
+
 void loop() {
+  sensorsData = new SensorsData;
   readSensorsData(sensorsData);
   logWriteSensorsData(sensorsData);
+  delete sensorsData;
+  for (int i = 0; i < 1500; ++i) {
+    gps += 'q';
+  }
 }
