@@ -32,6 +32,7 @@ struct SensorsData {
   float temperature;
   float pressure;
   float attitude;
+  int16_t magnet[3];
 };
 SensorsData sensorsData;
 
@@ -69,6 +70,9 @@ inline void logWriteSensorsData(SensorsData &data) {
   logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
   logWriteReading("Attitude", data.attitude);
+  logWriteReading("MagnetX", data.magnet[0]);
+  logWriteReading("MagnetY", data.magnet[1]);
+  logWriteReading("MagnetZ", data.magnet[2]);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -187,11 +191,38 @@ float pressureToAttitude(float pressure) {
   return (1 - powf(pressure / 1013.25, 0.190263)) * 44330.8;
 }
 
+void readMagnet(int16_t *m) {
+#ifdef __DEBUG__
+  logFile.print(millis());
+  logFile.println(" [DEBUG] Reading magnetometer");
+  logFile.flush();
+#endif
+  Wire.beginTransmission(LIS3MDL_I2C_ADDRESS);
+  Wire.write(0xA8);
+  Wire.endTransmission();
+  Wire.requestFrom(LIS3MDL_I2C_ADDRESS, 6);
+
+  while (Wire.available() < 6)
+    ;
+
+  uint8_t xlm = Wire.read();
+  uint8_t xhm = Wire.read();
+  uint8_t ylm = Wire.read();
+  uint8_t yhm = Wire.read();
+  uint8_t zlm = Wire.read();
+  uint8_t zhm = Wire.read();
+
+  m[0] = (int16_t)(xhm << 8 | xlm);
+  m[1] = (int16_t)(yhm << 8 | ylm);
+  m[2] = (int16_t)(zhm << 8 | zlm);
+}
+
 inline void readSensorsData(SensorsData &data) {
   data.timestamp = millis();
   data.temperature = readTemperature();
   data.pressure = readPressure();
   data.attitude = pressureToAttitude(data.pressure);
+  readMagnet(data.magnet);
 }
 
 // SETUP/LOOP
