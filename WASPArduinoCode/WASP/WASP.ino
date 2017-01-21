@@ -27,7 +27,7 @@
 File logFile;
 
 // SENSORS STRUCTURE
-/*struct SensorsData {
+struct SensorsData {
   long timestamp;
   float temperature;
   float pressure;
@@ -36,8 +36,8 @@ File logFile;
   int16_t accel[3];
   int16_t gyro[3];
   char gps[1500];
-};*/
-// SensorsData sensorsData;
+};
+SensorsData sensorsData;
 
 // FUNCTIONS
 // # SD Card management #
@@ -64,7 +64,7 @@ template <typename T> inline void logWriteReading(String name, T value) {
   logFile.flush();
 }
 
-/*inline void logWriteSensorsData(SensorsData &data) {
+inline void logWriteSensorsData(SensorsData &data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
   logFile.println(data.timestamp);
@@ -79,7 +79,7 @@ template <typename T> inline void logWriteReading(String name, T value) {
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
-}*/
+}
 
 // # Misc I2C functions used by sensors #
 inline void writeReg(byte address, byte reg, byte value) {
@@ -220,13 +220,13 @@ void readMagnet(int16_t *m) {
   m[2] = (int16_t)(zhm << 8 | zlm);
 }
 
-/*inline void readSensorsData(SensorsData &data) {
+inline void readSensorsData(SensorsData &data) {
   data.timestamp = millis();
   data.temperature = readTemperature();
   data.pressure = readPressure();
   data.attitude = pressureToAttitude(data.pressure);
   readMagnet(data.magnet);
-}*/
+}
 
 // SETUP/LOOP
 void setup() {
@@ -235,6 +235,6 @@ void setup() {
 }
 
 void loop() {
-  // readSensorsData(sensorsData);
-  // logWriteSensorsData(sensorsData);
+  readSensorsData(sensorsData);
+  logWriteSensorsData(sensorsData);
 }
