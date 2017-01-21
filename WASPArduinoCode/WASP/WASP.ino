@@ -63,18 +63,18 @@ template <typename T> inline void logWriteReading(String name, T value) {
   logFile.flush();
 }
 
-inline void logWriteSensorsData(SensorsData &data) {
+inline void logWriteSensorsData(SensorsData *data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
-  logFile.println(data.timestamp);
+  logFile.println(data->timestamp);
   logFile.flush();
 
-  logWriteReading("Temperature", data.temperature);
-  logWriteReading("Pressure", data.pressure);
-  logWriteReading("Attitude", data.attitude);
-  logWriteReading("MagnetX", data.magnet[0]);
-  logWriteReading("MagnetY", data.magnet[1]);
-  logWriteReading("MagnetZ", data.magnet[2]);
+  logWriteReading("Temperature", data->temperature);
+  logWriteReading("Pressure", data->pressure);
+  logWriteReading("Attitude", data->attitude);
+  logWriteReading("MagnetX", data->magnet[0]);
+  logWriteReading("MagnetY", data->magnet[1]);
+  logWriteReading("MagnetZ", data->magnet[2]);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -219,12 +219,12 @@ void readMagnet(int16_t *m) {
   m[2] = (int16_t)(zhm << 8 | zlm);
 }
 
-inline void readSensorsData(SensorsData &data) {
-  data.timestamp = millis();
-  data.temperature = readTemperature();
-  data.pressure = readPressure();
-  data.attitude = pressureToAttitude(data.pressure);
-  readMagnet(data.magnet);
+inline void readSensorsData(SensorsData *data) {
+  data->timestamp = millis();
+  data->temperature = readTemperature();
+  data->pressure = readPressure();
+  data->attitude = pressureToAttitude(data->pressure);
+  readMagnet(data->magnet);
 }
 
 // SETUP/LOOP
