@@ -269,9 +269,9 @@ void readGyro(int16_t *g) {
   uint8_t zlg = Wire.read();
   uint8_t zhg = Wire.read();
 
-  g[0] = (int16_t)(xha << 8 | xla);
-  g[1] = (int16_t)(yha << 8 | yla);
-  g[2] = (int16_t)(zha << 8 | zla);
+  g[0] = (int16_t)(xhg << 8 | xlg);
+  g[1] = (int16_t)(yhg << 8 | ylg);
+  g[2] = (int16_t)(zhg << 8 | zlg);
 }
 
 inline void readSensorsData(SensorsData *data) {
