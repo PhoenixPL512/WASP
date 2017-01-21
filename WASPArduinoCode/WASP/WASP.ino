@@ -233,16 +233,14 @@ void setup() {
   initSensors();
 }
 
-char *gps;
+char gps[1500];
 
 void loop() {
   sensorsData = new SensorsData;
   readSensorsData(sensorsData);
   logWriteSensorsData(sensorsData);
   delete sensorsData;
-  gps = new char[1500];
   for (int i = 0; i < 1500; ++i) {
     gps[i] += 'q';
   }
-  delete[] gps;
 }
