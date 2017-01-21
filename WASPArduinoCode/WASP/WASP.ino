@@ -67,7 +67,7 @@ template <typename T> inline void logWriteReading(String name, T value) {
 inline void logWriteSensorsData(SensorsData &data) {
   logFile.println("[SENSORSDATA]");
   logFile.print("[T]");
-  logFile.println(data.timestamp);
+  // logFile.println(data.timestamp);
   logFile.flush();
 
   /*logWriteReading("Temperature", data.temperature);
