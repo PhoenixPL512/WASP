@@ -28,6 +28,13 @@ File logFile;
 
 // SENSORS STRUCTURE
 struct SensorsData {
+#ifdef __DEBUG__
+  SensorsData() {
+    logFile.print(millis);
+    logFile.println(" [DEBUG] SensorsData created!");
+    logFile.flush();
+  }
+#endif
   long timestamp;
   float temperature;
   float pressure;
@@ -75,6 +82,12 @@ inline void logWriteSensorsData(SensorsData *data) {
   logWriteReading("MagnetX", data->magnet[0]);
   logWriteReading("MagnetY", data->magnet[1]);
   logWriteReading("MagnetZ", data->magnet[2]);
+  logWriteReading("AccelX", data->accel[0]);
+  logWriteReading("AccelY", data->accel[1]);
+  logWriteReading("AccelZ", data->accel[2]);
+  logWriteReading("GyroX", data->gyro[0]);
+  logWriteReading("GyroY", data->gyro[1]);
+  logWriteReading("GyroZ", data->gyro[2]);
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -219,30 +232,66 @@ void readMagnet(int16_t *m) {
   m[2] = (int16_t)(zhm << 8 | zlm);
 }
 
+void readAccel(int16_t *a) {
+  Wire.beginTransmission(LSM6_I2C_ADDRESS);
+  Wire.write(0x28);
+  Wire.endTransmission();
+  Wire.requestFrom(LSM6_I2C_ADDRESS, 6);
+
+  while (Wire.available() < 6)
+    ;
+
+  uint8_t xla = Wire.read();
+  uint8_t xha = Wire.read();
+  uint8_t yla = Wire.read();
+  uint8_t yha = Wire.read();
+  uint8_t zla = Wire.read();
+  uint8_t zha = Wire.read();
+
+  a[0] = (int16_t)(xha << 8 | xla);
+  a[1] = (int16_t)(yha << 8 | yla);
+  a[2] = (int16_t)(zha << 8 | zla);
+}
+
+void readGyro(int16_t *g) {
+  Wire.beginTransmission(LSM6_I2C_ADDRESS);
+  Wire.write(0x22);
+  Wire.endTransmission();
+  Wire.requestFrom(LSM6_I2C_ADDRESS, 6);
+
+  while (Wire.available() < 6)
+    ;
+
+  uint8_t xlg = Wire.read();
+  uint8_t xhg = Wire.read();
+  uint8_t ylg = Wire.read();
+  uint8_t yhg = Wire.read();
+  uint8_t zlg = Wire.read();
+  uint8_t zhg = Wire.read();
+
+  g[0] = (int16_t)(xha << 8 | xla);
+  g[1] = (int16_t)(yha << 8 | yla);
+  g[2] = (int16_t)(zha << 8 | zla);
+}
+
 inline void readSensorsData(SensorsData *data) {
   data->timestamp = millis();
   data->temperature = readTemperature();
   data->pressure = readPressure();
   data->attitude = pressureToAttitude(data->pressure);
   readMagnet(data->magnet);
+  readAccel(data->accel);
+  readGyro(data->gyro);
 }
 
 // SETUP/LOOP
 void setup() {
   initLog();
   initSensors();
+  sensorsData = new SensorsData;
 }
 
-char *gps;
-
 void loop() {
-  sensorsData = new SensorsData;
   readSensorsData(sensorsData);
   logWriteSensorsData(sensorsData);
-  delete sensorsData;
-  gps = new char[1500];
-  for (int i = 0; i < 1500; ++i) {
-    gps[i] = 'q';
-  }
-  delete[] gps;
 }
