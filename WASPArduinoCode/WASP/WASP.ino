@@ -17,7 +17,7 @@
 
 // DEFINES
 /* I2C scanner found 3 devices: 0x1E, 0x5D and 0x6B */
-#define __DEBUG__ 1
+//#define __DEBUG__ 1
 #define SD_CS_PIN A1
 #define LPS331_I2C_ADDRESS 0x5D
 #define LIS3MDL_I2C_ADDRESS 0x1E
@@ -33,6 +33,9 @@ struct SensorsData {
   float pressure;
   float attitude;
   int16_t magnet[3];
+  int16_t accel[3];
+  int16_t gyro[3];
+  char gps[1500];
 };
 SensorsData sensorsData;
 
