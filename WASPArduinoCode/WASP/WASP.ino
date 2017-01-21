@@ -241,6 +241,6 @@ void loop() {
   logWriteSensorsData(sensorsData);
   delete sensorsData;
   for (int i = 0; i < 1500; ++i) {
-    gps += 'q';
+    gps[i] += 'q';
   }
 }
