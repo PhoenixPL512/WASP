@@ -28,13 +28,13 @@ File logFile;
 
 // SENSORS STRUCTURE
 struct SensorsData {
-  long timestamp;
-  float temperature;
-  float pressure;
-  float attitude;
-  int16_t magnet[3];
-  int16_t accel[3];
-  int16_t gyro[3];
+  // long timestamp;
+  // float temperature;
+  // float pressure;
+  // float attitude;
+  // int16_t magnet[3];
+  // int16_t accel[3];
+  // int16_t gyro[3];
   char gps[1500];
 };
 SensorsData sensorsData;
@@ -70,12 +70,12 @@ inline void logWriteSensorsData(SensorsData &data) {
   logFile.println(data.timestamp);
   logFile.flush();
 
-  logWriteReading("Temperature", data.temperature);
+  /*logWriteReading("Temperature", data.temperature);
   logWriteReading("Pressure", data.pressure);
   logWriteReading("Attitude", data.attitude);
   logWriteReading("MagnetX", data.magnet[0]);
   logWriteReading("MagnetY", data.magnet[1]);
-  logWriteReading("MagnetZ", data.magnet[2]);
+  logWriteReading("MagnetZ", data.magnet[2]);*/
 
   logFile.println("[SENSORSDATA_END]");
   logFile.flush();
@@ -221,11 +221,11 @@ void readMagnet(int16_t *m) {
 }
 
 inline void readSensorsData(SensorsData &data) {
-  data.timestamp = millis();
+  /*data.timestamp = millis();
   data.temperature = readTemperature();
   data.pressure = readPressure();
   data.attitude = pressureToAttitude(data.pressure);
-  readMagnet(data.magnet);
+  readMagnet(data.magnet);*/
 }
 
 // SETUP/LOOP
