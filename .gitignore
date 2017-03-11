@@ -30,3 +30,6 @@
 
 #DIA temporary files
 *.dia~
+
+.idea/
+__pycache__/
