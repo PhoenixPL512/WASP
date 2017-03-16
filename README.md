@@ -33,4 +33,6 @@ WASP Team:
 * Grzegorz Szczepański (sponsors, casing, antenna)
 * Mikołaj Sawa (parachute and misc stuff)
 
+Google Drive with rest of schematics and data: https://drive.google.com/drive/folders/0B_WKcqOm2YVfWHZnenRqZzk0bDg
+
 We are from Poland, we learn in Electronic School Group in Lublin. We are starting in 2017 edition of CanSat competition. Wish us luck.
