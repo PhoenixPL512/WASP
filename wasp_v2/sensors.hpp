@@ -9,7 +9,7 @@
 
 int16_t temperature, pressure, altitude;
 int16_t acc[3], mag[3], gyr[3];
-uint8_t gases[5];
+uint8_t gases[5], humidity;
 
 void writeReg(byte address, byte reg, byte value) {
   Wire.beginTransmission(address);
@@ -146,9 +146,21 @@ void readGases(uint8_t* g) {
     g[i] = Wire.read();
 }
 
+uint8_t readHumidity() {
+  Wire.beginTransmission(ATTINY_I2C_ADDRESS);
+  Wire.write(0x06);
+  Wire.requestFrom(ATTINY_I2C_ADDRESS, 1);
+
+  while(Wire.available() < 1)
+    ;
+
+  return Wire.read();
+}
+
 void readSensors() {
   // logWrite("<Reading from LPS>");
   temperature = static_cast<int16_t>(readTemperature()*100);
+  humidity = readHumidity();
   pressure = static_cast<int16_t>(readPressure()*100);
   altitude = static_cast<int16_t>(pressureToAttitude(pressure)*100);
 

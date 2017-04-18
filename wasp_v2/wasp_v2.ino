@@ -14,9 +14,9 @@ void setup() {
 void loop() {
   readSensors();
 
-  sprintf(buffer, "#%d|%d|%d#%d|%d|%d#%d|%d|%d#%d|%d|%d|%d|%d#%d|%d|%d", mag[0],
+  sprintf(buffer, "#%d|%d|%d#%d|%d|%d#%d|%d|%d#%d|%d|%d|%d|%d#%d|%d|%d|%d", mag[0],
           mag[1], mag[2], acc[0], acc[1], acc[2], gyr[0], gyr[1], gyr[2], gases[0],
-          gases[1], gases[2], gases[3], gases[4], temperature, pressure, altitude);
+          gases[1], gases[2], gases[3], gases[4], temperature, humidity, pressure, altitude);
   logFile.write('@');
   logFile.print(millis());
   logFile.write(buffer);
