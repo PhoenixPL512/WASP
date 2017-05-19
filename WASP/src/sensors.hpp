@@ -1,6 +1,9 @@
 #ifndef SENSORS_HPP
 #define SENSORS_HPP
+#include <Arduino.h>
 #include <Wire.h>
+#include <inttypes.h>
+#include <math.h>
 
 #define LPS331_I2C_ADDRESS 0x5D
 #define LIS3MDL_I2C_ADDRESS 0x1E
@@ -10,8 +13,9 @@
 int16_t temperature, pressure, altitude;
 int16_t acc[3], mag[3], gyr[3];
 uint8_t gases[5], humidity;
+unsigned long timestamp;
 
-void writeReg(byte address, byte reg, byte value) {
+void writeReg(uint8_t address, uint8_t reg, uint8_t value) {
   Wire.beginTransmission(address);
   Wire.write(reg);
   Wire.write(value);
@@ -20,6 +24,7 @@ void writeReg(byte address, byte reg, byte value) {
 
 void initSensors() {
   Wire.begin();
+  Wire.setClock(20000);
 
   // init LPS331 (temperature/pressure/attitude sensor)
   writeReg(LPS331_I2C_ADDRESS, 0x20, 0b11100000);
@@ -67,8 +72,8 @@ float readPressure() {
   return p / 4096;
 }
 
-float pressureToAttitude(float pressure) {
-  return (1 - powf(pressure / 1013.25, 0.190263)) * 44330.8;
+int16_t pressureToAttitude(float pressure) {
+  return static_cast<int16_t>(((1 - powf(pressure / 1013.25, 0.190263)) * 44330.8)*100);
 }
 
 void readMagnet(int16_t *m) {
@@ -159,10 +164,11 @@ uint8_t readHumidity() {
 
 void readSensors() {
   // logWrite("<Reading from LPS>");
+  timestamp = millis();
   temperature = static_cast<int16_t>(readTemperature()*100);
   humidity = readHumidity();
   pressure = static_cast<int16_t>(readPressure()*100);
-  altitude = static_cast<int16_t>(pressureToAttitude(pressure)*100);
+  altitude = pressureToAttitude(pressure);
 
   // logWrite("<Reading from LIS3MDL>");
   readMagnet(mag);
@@ -171,6 +177,8 @@ void readSensors() {
   readAccel(acc);
   readGyro(gyr);
   readGases(gases);
+
+
 }
 
 #endif
